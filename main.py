@@ -15,17 +15,19 @@ def end(player_cards, computer_cards):
     while computer_score < 17:
         computer_cards.append(random.choice(cards))
         computer_score = sum(computer_cards)
+    
+    c_final_score = 21-computer_score
+    p_final_score = 21-player_score
         
-        
-    if player_score > 21 or (21 - player_score) > (21 - computer_score):
+    if player_score > 21 or c_final_score < p_final_score and computer_score < 21:
         print(f" Your cards: {player_cards}, score: {player_score}")
         print(f" Computer cards: {computer_cards}, score: {computer_score}")
         print(" YOU LOSE :-(\n")
-    elif player_score > 0 and computer_score:
+    elif player_score == computer_score:
         print(f" Your cards: {player_cards}, score: {player_score}")
         print(f" Computer cards: {computer_cards}, score: {computer_score}")
         print(" IT'S A DROW :O \n")
-    elif computer_score > 21 or (21 - player_score) < (21 - computer_score):
+    elif computer_score > 21 or c_final_score > p_final_score:
         print(f" Your cards: {player_cards}, score: {player_score}")
         print(f" Computer cards: {computer_cards}, score: {computer_score}")
         print("YOU WIN!:-)\n")
@@ -38,21 +40,27 @@ def game():
         your_cards.append(random.choice(cards))
         your_cards.append(random.choice(cards))
         score = 0 
-        for i in your_cards:
-
-            score += i
+        
 
         computer_cards.append(random.choice(cards))
         computer_cards.append(random.choice(cards))
-        print(f" Your cards: {your_cards}, current score is: {score}")
+        print(f" Your cards: {your_cards}, current score is: {sum(your_cards)}")
         print(f" Computer first card is {computer_cards[0]}")
         print("")
+        if sum(your_cards) == 21:
+            print("_"*5)
+            print("You have luck! Your score is 21. You hit the blackjack!")
+            print("_"*5)
+            play_again = input("Do you want to play again? (y/n): ")
+            if play_again == 'y':
+                game()
         continue_playing = input("Type 'y' to get another card or type 'n' to pass: ")
         if continue_playing == 'y':
             your_cards.append(random.choice(cards))
             score = sum(your_cards)
-            print(f"Your cards: {your_cards}, current score is: {score}\n")
-            if score > 21:
+            if score > 21 and 11 in your_cards:
+                your_cards.remove(11)
+                your_cards.append(1)
                 end(your_cards, computer_cards)
                 play_again = input("Do you want to play again? (y/n): ")
                 if play_again == 'y':
